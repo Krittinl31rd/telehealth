@@ -1,0 +1,134 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+var app = require('../app');
+var debug = require('debug')('nodetelehealth:server');
+var http = require('http');
+var https = require('https');
+const fs = require("fs");
+
+/**
+ * Get port from environment and store in Express.
+ */
+
+var port = normalizePort(process.env.PORT || process.env.SERVER_PORT);
+var postHttps = 3031
+
+app.set('port', port);
+app.set('postHttps', postHttps);
+
+/**
+ * Create HTTP server.
+ */
+// Read SSL certificate and key
+
+/*const options = {
+  pfx: fs.readFileSync('cert/localhosty.cer.pfx'),
+  passphrase: 'Archi123456',
+};*/
+const serverOptions = {
+  cert: fs.readFileSync("server.crt", "utf8"),
+  key: fs.readFileSync("server.key", "utf8"),
+};
+
+var https_options = {
+  cert: fs.readFileSync("ca/ca2024.crt"),
+  key: fs.readFileSync("ca/ca2024.key"),
+  ca: fs.readFileSync('ca/ca-pfx.pem')
+};
+
+var server = http.createServer(app);
+var serverHttps = https.createServer(serverOptions, app);
+
+/*
+Redirect HTTP traffic to HTTPS
+const httpServer = http.createServer((req, res) => {
+  res.writeHead(301, { Location: `https://${req.headers.host}${req.url}` });
+  res.end();
+});
+httpServer.listen(80);*/
+
+/*https.createServer(options, (req, res) => {
+  res.writeHead(200);
+  res.end('Hello Secure World!');
+}).listen(443, () => {
+  console.log('Server is listening on port 443');
+});*/
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
+
+serverHttps.listen(postHttps);
+serverHttps.on('error', onError);
+serverHttps.on('listening', onListening);
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  var bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+  var addr = server.address();
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind);
+}
+
+
+
+//openssl req -x509 -newkey rsa:2048 -nodes -sha256 -subj '/CN=127.0.0.1' \-keyout server.key -out server.crt

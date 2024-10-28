@@ -1,0 +1,404 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import "root.css";
+
+/* layout */
+.app-container {
+    background-color: var(--app-background);
+    width: 100%;
+    height: 100%;
+    font-family: "Poppins", sans-serif;
+    display: flex;
+    transition: 0.2s;
+}
+
+.app-container.patient {
+
+    display: none;
+
+    .right-side {
+        display: none;
+    }
+}
+
+.app-container.patient.active {
+    display: flex;
+}
+
+/* navigation */
+.right-side {
+    margin-left: auto;
+    flex-basis: 400px;
+    height: 100%;
+    padding: 1em;
+    position: relative;
+    transition: all 300ms cubic-bezier(0.19, 1, 0.56, 1);
+    display: none;
+}
+
+.right-side.show {
+    display: block;
+    transform: translateX(0);
+}
+
+/* Chat */
+.chat-container {
+    background-color: var(--chat-background);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.chat-header {
+    padding: 1em;
+    border-bottom: 1px solid #f5f5f5;
+}
+
+.chat-header span {
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--main-color);
+}
+
+.chat-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1em;
+}
+
+.message-wrapper {
+    display: flex;
+    padding: 1em 0;
+}
+
+.name {
+    margin: 0;
+    line-height: 1em;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--message-text);
+}
+
+.message {
+    margin-top: 0.5em;
+    background-color: var(--message-bg);
+    padding: 0.5em 1em;
+    border-radius: 0 12px 12px 12px;
+    font-size: 14px;
+    line-height: 1.5em;
+    max-width: calc(100% - 32px);
+    color: var(--message-text);
+    word-break: break-all;
+    word-wrap: break-word;
+}
+
+.message-content.center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.message-medical {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0.5em;
+    background-color: var(--chat-background);
+    border: 1px solid var(--link-color);
+    padding: 0.5em 1em;
+    border-radius: 12px 12px 12px 12px;
+    font-size: 14px;
+    line-height: 1.5em;
+    max-width: calc(100% - 32px);
+    color: var(--message-text);
+    gap: 1em;
+}
+
+.medical-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 48px;
+    height: 48px;
+    background-color: #FFE19F;
+    border-radius: 1em;
+}
+
+.medical-icon img {
+    width: 30px;
+    height: 30px;
+}
+
+.medical-info {
+    flex: 1;
+    font-size: 14px;
+}
+
+.medical-name {
+    color: var(--message-text);
+}
+
+.medical-result {
+    color: var(--message-text);
+    font-weight: bold;
+}
+
+.message-wrapper.reverse {
+    flex-direction: row-reverse;
+}
+
+.message-wrapper.reverse .message {
+    background-color: var(--message-bg-2);
+    color: #fff;
+    border-radius: 16px 0 16px 16px;
+    margin-left: auto;
+}
+
+.message-wrapper.reverse .name {
+    text-align: right;
+}
+
+
+.chat-typing-area-wrapper {
+    padding: 1em;
+}
+
+.chat-typing-area {
+    display: flex;
+    border-radius: 10px;
+    padding: 0.5em;
+    box-shadow: var(--navigation-box-shadow);
+    background-color: var(--message-bg);
+}
+
+.chat-input {
+    border: none;
+    font-size: 14px;
+    line-height: 24px;
+    outline: none;
+    color: var(--message-text);
+    flex: 1;
+    background-color: transparent;
+}
+
+.chat-input::placeholder {
+    color: var(--placeholder-text);
+}
+
+.send-button {
+    color: #fff;
+    background-color: var(--main-color);
+    border-radius: 8px;
+    border: none;
+    width: 4em;
+    height: 2.5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* main app */
+.app-main {
+    flex: 1;
+    width: 100%;
+    min-height: 100vh;
+    padding: 32px 16px 16px 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.video-call-wrapper {
+    width: 100%;
+    height: 100%;
+    border-radius: 1em;
+    overflow: hidden;
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+}
+
+.video-participant {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.video-call-wrapper.video-two .video-participant {
+    width: 100%;
+    height: 100%;
+}
+
+.video-call-wrapper.video-three .video-participant {
+    width: 100%;
+    height: 50%;
+}
+
+.video-call-wrapper.video-four .video-participant {
+    width: 50%;
+    height: 50%;
+}
+
+.video-call-wrapper.video-five {
+    justify-content: center;
+}
+
+.video-call-wrapper.video-five .video-participant {
+    width: 33.33%;
+    height: 50%;
+}
+
+.video-call-wrapper.video-six .video-participant {
+    width: 33.33%;
+    height: 50%;
+}
+
+
+.video-participant video {
+    background-color: black;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.video-small {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    height: 150px !important;
+    width: 220px !important;
+    border-radius: 5px;
+    border: 2px solid #F2F2F2;
+    -webkit-box-shadow: 3px 3px 15px -1px rgba(0, 0, 0, 0.77);
+    box-shadow: 3px 3px 15px -1px rgba(0, 0, 0, 0.77);
+    z-index: 11;
+}
+
+.name-tag {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    font-size: 12px;
+    color: #000000;
+    background-color: rgb(255, 255, 255);
+    border-radius: 4px;
+    padding: 4px 12px;
+}
+
+.video-call-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 2em;
+    max-width: 500px;
+}
+
+.video-action-button {
+    border: none;
+    height: 3em;
+    margin: 0 0.5em;
+    box-shadow: var(--navigation-box-shadow);
+    border-radius: 1em;
+    width: 3em;
+    cursor: pointer;
+    outline: none;
+    background-color: var(--button-bg);
+}
+
+.video-action-button i {
+    font-size: 20px;
+}
+
+.video-action-button.main {
+    background-color: var(--main-color);
+    color: var(--app-background);
+}
+
+.video-action-button.medical {
+    background-color: #FFAE00;
+    color: var(--app-background);
+}
+
+.video-action-button.chat {
+    background-color: #5700B8;
+    color: var(--app-background);
+}
+
+.video-action-button.endcall {
+    background-color: #ff1932;
+    color: var(--app-background);
+    width: auto;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+}
+
+.btn-close-right {
+    border: none;
+    background-color: transparent;
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    color: var(--light-font);
+    font-size: 24px;
+    outline: none;
+    cursor: pointer;
+    display: none;
+}
+
+.expand-btn {
+    position: absolute;
+    right: 32px;
+    top: 24px;
+    border: none;
+    background-color: var(--link-color);
+    border-radius: 4px;
+    color: var(--message-text);
+    width: 40px;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+    display: none;
+}
+
+.expand-btn.show {
+    display: flex;
+}
+
+/* media queries */
+@media screen and (max-width: 900px) {
+    .app-main {
+        padding: 32px 16px 16px 32px;
+    }
+
+    .app-container.active {
+        .expand-btn {
+            display: block;
+        }
+    }
+
+
+    .right-side {
+        position: absolute;
+        right: 0;
+        background-color: var(--chat-background);
+        transform: translateX(100%);
+        z-index: 999;
+        width: 100%;
+    }
+
+    .right-side.show {
+        transform: translateX(0);
+    }
+
+    .btn-close-right {
+        display: block;
+    }
+}
+
+@media screen and (max-width: 520px) {
+    .video-participant video {
+        object-fit: fill;
+    }
+}

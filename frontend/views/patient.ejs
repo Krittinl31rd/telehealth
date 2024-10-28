@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>
+    <%= title %>
+  </title>
+  <link rel='stylesheet' href='/stylesheets/patient.css' />
+  <link rel='stylesheet' href='/stylesheets/rtc.css' />
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <script src="https://192.168.1.66:3001/socket.io/socket.io.js"></script>
+</head>
+
+<body>
+
+  <div class="app-container" id="mainCotainer">
+    <div class="app-main">
+      <p>Welcome Patient to <%= title %>
+      </p>
+
+      <div class="d-flex d-flex-column justify-content-center align-item-center" style="height: 100%;" id="waiting">
+        <div class="loader"></div>
+        <h2>Please authentication for use.</h2>
+      </div>
+
+      <div class="action-container" id="actionContainer">
+        <button class="actionBtn" id="chooseDoctor">Choose doctor</button>
+        <button class="actionBtn" id="consultDoctor">Consult doctor</button>
+        <button class="actionBtn" id="choosePrimaryDoctor">Choose primary doctor</button>
+      </div>
+
+
+      <div class="doctor-container" id="chooseContainer">
+        <div class="doctor-header">
+          <span>Choose doctor</span>
+        </div>
+      </div>
+
+      <div class="doctor-container" id="consultContainer">
+        <div class="doctor-header">
+          <span>Consult doctor</span>
+        </div>
+        <div class="doctor-area d-flex-column justify-content-center">
+          <div class="doctor-wrapper d-flex-column align-item-center">
+            <div class="loader"></div>
+            <h3 id="statusCall">You are now calling to consult a doctor. Please wait a moment.</h3>
+          </div>
+        </div>
+      </div>
+
+      <div class="doctor-container" id="choosePrimaryContainer">
+        <div class="doctor-header">
+          <span>Choose primary doctor</span>
+        </div>
+      </div>
+
+    </div>
+    <button class="backBtn">
+      <i class='bx bx-arrow-back'></i>
+    </button>
+    <button class="config-btn">
+      <i class='bx bxs-cog'></i>
+    </button>
+
+    <div class="form-config">
+      <label>Username</label>
+      <input type="text" id="mcnUsername">
+
+      <label for="lname">Password</label>
+      <input type="password" id="mcnPassword">
+
+      <button class="save">Save</button>
+
+    </div>
+  </div>
+
+  <div class="app-container patient" id="patientContainer">
+    <div class="app-main">
+      <div class="video-call-wrapper" id="videos">
+
+      </div>
+      <div class="video-call-actions">
+        <button class="video-action-button main" id="btnMic">
+          <i class='bx bxs-microphone'></i>
+        </button>
+        <button class="video-action-button main" id="btnCamera">
+          <i class='bx bxs-camera'></i>
+        </button>
+        <button class="video-action-button endcall" id="btnEnd">
+          <i class='bx bxs-phone'></i> Leave
+        </button>
+        <button class="video-action-button medical" id="btnMedical">
+          <i class='bx bxs-capsule'></i>
+        </button>
+      </div>
+    </div>
+    <!-- Right Side -->
+    <div class="right-side">
+      <button class="btn-close-right"><i class='bx bx-x'></i></button>
+      <div class="chat-container">
+        <div class="chat-header">
+          <span>Chat messages</span>
+        </div>
+        <div class="chat-area" id="chatArea">
+
+        </div>
+        <div class="chat-typing-area-wrapper">
+          <div class="chat-typing-area">
+            <input type="text" placeholder="Type your message..." class="chat-input" id="chatInput">
+            <button class="send-button" id="chatSend">
+              <i class='bx bx-send'></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="sensitive-info hide">
+      <span>Do you allow personal information ?</span>
+      <div class="sensitive-btn d-flex">
+        <button class="accept" id="acceptInfo">Accept</button>
+        <button class="reject" id="rejectInfo">Reject</button>
+      </div>
+    </div>
+
+    <button class="expand-btn">
+      <i class='bx bxs-chat'></i>
+    </button>
+  </div>
+
+
+  <script src="./javascripts/config.js"></script>
+  <script src="./javascripts/patient.js"></script>
+</body>
+
+</html>
