@@ -1,3 +1,4 @@
+const mainIP = "192.168.1.66"
 const videoWrapper = document.getElementById('videos');
 const btnMic = document.getElementById('btnMic');
 const btnCamera = document.getElementById('btnCamera');
@@ -28,7 +29,7 @@ var socket = null;
 function Connect() {
 
     // ResetView();
-    socket = new WebSocket("wss://192.168.1.66:1231/echo");
+    socket = new WebSocket(`wss://${mainIP}:1231/echo`);
     const docUsername = 'ham';
     const docPassword = '123456';
 
@@ -181,7 +182,7 @@ function playSound() {
 
 async function fetchData() {
     try {
-        const response = await fetch(`https://192.168.1.66:3031/data/${iden}`);
+        const response = await fetch(`https://${mainIP}:3031/data/${iden}`);
         let data = await response.json();
         measData = data.result;
 
@@ -1098,7 +1099,7 @@ let currentCam;
 let hasJoinedRoom = false;
 
 async function startRTC() {
-    socketRTC = io.connect('https://192.168.1.66:3001');
+    socketRTC = io.connect(`https://${mainIP}:3001`);
     mainContainer.className = `app-container hide`;
     patientContainer.className = `app-container active`;
 

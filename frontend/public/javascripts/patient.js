@@ -1,4 +1,4 @@
-
+const mainIP = "192.168.1.66"
 const videoWrapper = document.getElementById('videos');
 const btnMic = document.getElementById('btnMic');
 const btnCamera = document.getElementById('btnCamera');
@@ -37,7 +37,7 @@ var yourCase = localStorage.getItem("caseId") || "";
 var yourId = localStorage.getItem("yourIden") || "";
 function Connect() {
     // ResetView();
-    socket = new WebSocket("wss://192.168.1.66:1231/echo");
+    socket = new WebSocket(`wss://${mainIP}:1231/echo`);
 
 
     // Connection opened
@@ -262,7 +262,7 @@ let hasJoinedRoom = false;
 
 async function startRTC() {
     socketRTC = null;
-    socketRTC = io.connect('https://192.168.1.66:3001');
+    socketRTC = io.connect(`https://${mainIP}:3001`);
 
     mainContainer.className = `app-container hide`;
     patientContainer.className = `app-container patient active`;
