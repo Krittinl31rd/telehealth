@@ -1366,21 +1366,40 @@ async function getMedia(cameraId, micId) {
     };
 
     try {
-        localStream = await window.navigator.mediaDevices.getUserMedia(cameraId || micId ? cameraId ? preferredCameraConstraints : preferredMicConstraints : initialConstraints);
+        // Check if any media devices are available
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        const hasAudioInput = devices.some(device => device.kind === 'audioinput');
+        const hasVideoInput = devices.some(device => device.kind === 'videoinput');
+        // Set constraints based on available devices
+        const constraints = cameraId || micId
+            ? (cameraId ? preferredCameraConstraints : preferredMicConstraints)
+            : initialConstraints;
+        if (hasAudioInput || hasVideoInput) {
+            // Attempt to get media if at least one device is available
+            localStream = await navigator.mediaDevices.getUserMedia(constraints);
+            displayMedia();
+        } else {
+            console.log('No camera or microphone connected. Joining without media.');
+        }
 
-        displayMedia();
+        // Emit room join event regardless of media connection
+        socketRTC.emit('join-room', yourCase);
+
+
+        // localStream = await window.navigator.mediaDevices.getUserMedia(cameraId || micId ? cameraId ? preferredCameraConstraints : preferredMicConstraints : initialConstraints);
+        // displayMedia();
         // getAllCameras();
         // getAllMics();
-
         // socket.emit('media-update', { cameraId, micId });
-
-
         // room joining event
-        console.log(currentCase);
-        socketRTC.emit('join-room', currentCase);
+        // socketRTC.emit('join-room', currentCase);
 
     } catch (err) {
-        console.log(err);
+        console.log(`Error accessing media devices: ${err}`);
+        alert(`Media error: ${err.message}. Joining room without media.`);
+
+        // Emit room join event even if there is an error accessing media
+        socketRTC.emit('join-room', yourCase);
     }
 };
 
