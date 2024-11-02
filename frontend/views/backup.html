@@ -1,0 +1,71 @@
+<!-- patient -->
+<div class="app-main">
+    <p>Welcome Patient to <%= title %>
+    </p>
+
+    <div class="d-flex d-flex-column justify-content-center align-item-center" style="height: 100%;" id="waiting">
+        <div class="loader"></div>
+        <h2>Please authentication for use.</h2>
+    </div>
+
+    <div class="action-container" id="actionContainer">
+        <button class="actionBtn" id="chooseDoctor">Choose doctor</button>
+        <button class="actionBtn" id="consultDoctor">Consult doctor</button>
+        <button class="actionBtn" id="choosePrimaryDoctor">Choose primary doctor</button>
+    </div>
+
+
+    <div class="doctor-container" id="chooseContainer">
+        <div class="doctor-header">
+            <span>Choose doctor</span>
+        </div>
+    </div>
+
+    <div class="doctor-container" id="consultContainer">
+        <div class="doctor-header">
+            <span>Consult doctor</span>
+        </div>
+        <div class="doctor-area d-flex-column justify-content-center">
+            <div class="doctor-wrapper d-flex-column align-item-center">
+                <div class="loader"></div>
+                <h3 id="statusCall">You are now calling to consult a doctor. Please wait a moment.</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="doctor-container" id="choosePrimaryContainer">
+        <div class="doctor-header">
+            <span>Choose primary doctor</span>
+        </div>
+    </div>
+
+</div>
+
+
+<label style="font-weight: bold; font-size: 20px;">Book a Doctor</label>
+<div class="main-doctor">
+
+    <div class="doctors">
+        <div class="box-doctor">
+            <div class="header">
+                <div class="img-doctor">
+                    <img class="img" src="./images/doctor2.png">
+                </div>
+                <div class="name-doctor">
+                    <label style="font-weight: bold; font-size: 20px;">Doctor</label>
+                    <label>Eric Capton</label>
+                </div>
+            </div>
+            <div class="content">
+                <label style="font-weight: bold; font-size: 20px;">Psychiatry</label>
+                <label>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo blanditiis eveniet ipsam, quas
+                    tempora
+                    aperiam officiis?</label>
+            </div>
+            <div class="footer">
+                <button>Consult with Doctor</button>
+            </div>
+        </div>
+    </div>
+
+    <!--  -->

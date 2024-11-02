@@ -249,15 +249,20 @@ app.post('/facerecog', async function (req, res, next) {
     fs.writeFileSync('image.jpg', imageBuffer);
     console.log(`imageBuffer: Saved`);
 
+    const member = await Member.findOne({
+        where: {
+            iden: "1"
+        }
+    })
     let payload = {
         recode: "2000",
         remsg: "success",
         userinfo:
         {
-            name: "hamzzzzzzz",
-            sex: "male",
-            age: "24",
-            usernum: "1609900561230",
+            name: member.name,
+            sex: member.gender == 1 ? "Male" : "Female",
+            age: caulateAge(member.birthday),
+            usernum: member.iden,
             address: "128 soi Inthraporn BKK.",
             remark: "GG NT"
         }
@@ -270,7 +275,7 @@ app.post('/facerecog', async function (req, res, next) {
             param: {
                 status: 1, //0=undefined, 1=success, 2=failed
                 deviceId: deviceID,
-                iden: '1609900561230',
+                iden: payload.userinfo.usernum,
                 message: "success"
             }
         }
@@ -687,6 +692,7 @@ app.get('/data/:iden', async (req, res) => {
             iden: member.iden,
             name: member.name,
             birthday: member.birthday,
+            age: caulateAge(member.birthday),
             result: []
         }
 
@@ -807,6 +813,23 @@ app.get('/data/:iden', async (req, res) => {
     }
 })
 
+app.get('/getdoctor', async (req, res) => {
+    try {
+        const doctors = await Member.findAll({
+            where: {
+                role: role.Doctor,
+                status: 1
+            }
+        })
+        if (!doctors) {
+            return res.status(400).json({ message: "No doctor." })
+        }
+        res.status(200).json(doctors)
+    } catch (err) {
+        console.log(err);
+        res.status(500).send("Internet Server Error")
+    }
+})
 
 
 //Websocket server ============================================================

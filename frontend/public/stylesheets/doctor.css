@@ -3,37 +3,34 @@
 @import "root.css";
 
 
-.app-container {
+.app-container-doctor {
     background-color: var(--app-background);
     width: 100%;
-    /* height: 100%; */
-    min-height: 100vh;
+    height: 100vh;
     font-family: "Poppins", sans-serif;
     display: flex;
+    align-items: center;
+    justify-content: center;
     transition: 0.2s;
 }
 
-.app-container.hide {
+.app-container-doctor.hide {
     display: none;
 }
 
-.app-container.active {
+.app-container-doctor.active {
     display: flex;
 }
 
-.app-main {
-    flex: 1;
+.app-main-doctor {
+    /* height: 100%; */
+    height: 100%;
     width: 100%;
     padding: 16px 64px 16px 64px;
     display: flex;
+    align-items: center;
+    justify-content: center;
     flex-direction: column;
-}
-
-.app-main p {
-    font-size: 32px;
-    font-weight: bold;
-    color: var(--main-color);
-    border-radius: 1em;
 }
 
 .caselist-container {
@@ -42,7 +39,7 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 100%;
+    height: 70%;
     overflow: auto;
 }
 
@@ -219,4 +216,32 @@
     justify-content: center;
     align-items: center;
     display: none;
+}
+
+
+#caselist {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#caselist td,
+#caselist th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#caselist tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#caselist tr:hover {
+    background-color: #ddd;
+}
+
+#caselist th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    background-color: #04AA6D;
+    color: white;
 }

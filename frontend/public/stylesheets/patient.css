@@ -3,38 +3,108 @@
 @import "root.css";
 
 
-.app-container {
+.app-container-patient {
     background-color: var(--app-background);
     width: 100%;
-    /* height: 100%; */
-    min-height: 100vh;
+    height: 100vh;
     font-family: "Poppins", sans-serif;
     display: flex;
     transition: 0.2s;
 }
 
-.app-container.hide {
+.app-container-patient.hide {
     display: none;
 }
 
-.app-container.active {
+.app-container-patient.active {
     display: flex;
 }
 
-.app-main {
-    flex: 1;
-    width: 100%;
+.app-main-patient {
+    height: calc(100% - 16px);
+    width: calc(100% - 64px);
     padding: 16px 64px 16px 64px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    margin: auto;
+    background-color: white;
 }
 
-.app-main p {
-    font-size: 32px;
-    font-weight: bold;
-    color: var(--main-color);
-    border-radius: 1em;
+.main-doctor {
+    width: 100%;
+    display: flex;
+    justify-items: center;
+    align-items: center;
+    overflow-x: auto;
+    gap: 24px;
+    padding: 16px 0 16px 0;
+}
+
+.doctors {
+    padding: 16px;
+    width: 100%;
+    display: flex;
+    gap: 8px;
+}
+
+.box-doctor {
+    border: 1px solid black;
+    min-width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 16px 8px 16px 8px;
+}
+
+.box-doctor .header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+}
+
+.box-doctor .header .img-doctor {
+    width: 86px;
+    height: 86px;
+    border: 1px solid black;
+    border-radius: 999px;
+    display: flex;
+    justify-content: center;
+    align-items: end;
+}
+
+.box-doctor .header .img-doctor .img {
+    width: 84px;
+    height: 84px;
+}
+
+.box-doctor .header .name-doctor {
+    display: flex;
+    flex-direction: column;
+}
+
+.box-doctor .content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.box-doctor .footer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.box-doctor button {
+    width: 100%;
+    padding: 16px 0 16px 0;
+    border: 1px solid black;
+    border-radius: 8px;
+    background-color: #BFD9FF;
+    font-weight: 600;
 }
 
 .doctor-container {

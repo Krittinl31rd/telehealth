@@ -5,9 +5,9 @@ const btnCamera = document.getElementById('btnCamera');
 const btnEnd = document.getElementById('btnEnd');
 // const selectCamera = document.getElementById('selectCamera');
 // const selectMic = document.getElementById('selectMic');
-const chatSend = document.getElementById('chatSend');
-const chatInput = document.getElementById('chatInput');
-const chatArea = document.getElementById('chatArea');
+// const chatSend = document.getElementById('chatSend');
+// const chatInput = document.getElementById('chatInput');
+// const chatArea = document.getElementById('chatArea');
 
 
 // ************* rtc *********************************
@@ -82,9 +82,9 @@ function ResetView() {//For first connect to websocket
     iden = ''
     localStorage.setItem("caseId", "");
     localStorage.setItem("yourIden", "");
-    mainContainer.className = `app-container active`;
+    mainContainer.className = `app-container-doctor active`;
     patientContainer.className = `app-container`;
-    chatArea.innerHTML = '';
+    // chatArea.innerHTML = '';
     resultCont.innerHTML = '';
     filterCont.innerHTML = '';
 }
@@ -128,7 +128,7 @@ async function CheckWebsocketCommand(package) {
                 }
             }
             else if (data.cmd == command.releaseCase) {
-                document.getElementById(`list-item${data.param.caseId}`).remove();
+                document.getElementById(data.param.caseId).remove()
             }
             else if (data.cmd == command.loginresult) {
                 if (data.param != undefined) {
@@ -139,16 +139,17 @@ async function CheckWebsocketCommand(package) {
             else if (data.cmd == command.allowSensitiveInfo) {
                 iden = data.param.iden;
                 localStorage.setItem("yourIden", data.param.iden);
-                chatArea.innerHTML += `<div class="message-wrapper">
-                            <div class="message-content">
-                                <p class="name">Bot</p>
-                                <div class="message">Patient ${iden} is allow sensitive info.</div>
-                            </div>
-                        </div>`
-                chatArea.scrollTop = chatArea.scrollHeight;
+                // chatArea.innerHTML += `<div class="message-wrapper">
+                //             <div class="message-content">
+                //                 <p class="name">Bot</p>
+                //                 <div class="message">Patient ${iden} is allow sensitive info.</div>
+                //             </div>
+                //         </div>`
+                // chatArea.scrollTop = chatArea.scrollHeight;
                 fetchData()
             }
             else if (data.cmd == command.anouncCase) {
+                console.log(data.param)
                 addItem(data.param.topic, data.param.caseId)
                 playSound()
             }
@@ -1056,16 +1057,15 @@ function uuidv4() {
     );
 }
 
+let i = 1
 function addItem(name, id) {
-    caselistContainer.innerHTML += `<div class="caselist-wrapper" id="list-item${id}">
-          <div class="caselist-content">
-            <div class="caselist-Id">
-              <span>Id: </span> ${id}
-            </div>
-            <div class="caselist-topic"><span>Topic: </span>${name}</div>
-            <button class="caselist-btn">Accept</button>
-          </div>
-        </div>`
+    document.getElementById('tbody').innerHTML += `
+    <tr id="${id}">
+        <td>${i++}</td>
+        <td>${id}</td>
+        <td>${name}</td>
+        <td><div style="display: flex; justify-content: center;"><button class="caselist-btn">Accept</button></div></td>
+    </tr>`
 
     const caselistBtn = document.querySelector('.caselist-btn');
     caselistBtn.addEventListener('click', () => {
@@ -1076,14 +1076,17 @@ function addItem(name, id) {
 
 function acceptCase(_caseId) {
     //Ask for state
-    let pl = {
-        cmd: command.askCaseState,
-        param: {
-            caseId: _caseId
-        }
-    };
-    socket.send(JSON.stringify(pl));
-    // window.open(`http://127.0.0.1:3001/room/${_caseId}`, '_blank');
+    if (_caseId) {
+        let pl = {
+            cmd: command.askCaseState,
+            param: {
+                caseId: _caseId
+            }
+        };
+        socket.send(JSON.stringify(pl));
+
+
+    }
 }
 
 
@@ -1100,7 +1103,7 @@ let hasJoinedRoom = false;
 
 async function startRTC() {
     socketRTC = io.connect(`https://${mainIP}:3001`);
-    mainContainer.className = `app-container hide`;
+    mainContainer.className = `app-container-doctor hide`;
     patientContainer.className = `app-container active`;
 
     getMedia();
@@ -1299,39 +1302,39 @@ async function startRTC() {
     });
 
     socketRTC.on('message', ({ msg, socketId, time }) => {
-        if (msg == 'joined') {
-            chatArea.innerHTML += `<div class="message-wrapper">
-                            <div class="message-content">
-                                <p class="name">Bot | ${time}</p>
-                                <div class="message">${socketId} joined the room.</div>
-                            </div>
-                        </div>`
-            chatArea.scrollTop = chatArea.scrollHeight;
-        } else if (msg == 'left') {
-            chatArea.innerHTML += `<div class="message-wrapper">
-                            <div class="message-content">
-                                <p class="name">Bot | ${time}</p>
-                                <div class="message">${socketId} left the room.</div>
-                            </div>
-                        </div>`
-            chatArea.scrollTop = chatArea.scrollHeight;
-        } else if (socketRTC.id == socketId) {
-            chatArea.innerHTML += `<div class="message-wrapper reverse">
-                            <div class="message-content">
-                                <p class="name">${socketId} | ${time}</p>
-                                <div class="message">${msg}</div>
-                            </div>
-                        </div>`
-            chatArea.scrollTop = chatArea.scrollHeight;
-        } else {
-            chatArea.innerHTML += `<div class="message-wrapper">
-                            <div class="message-content">
-                                <p class="name">${socketId} | ${time}</p>
-                                <div class="message">${msg}</div>
-                            </div>
-                        </div>`
-            chatArea.scrollTop = chatArea.scrollHeight;
-        }
+        // if (msg == 'joined') {
+        //     chatArea.innerHTML += `<div class="message-wrapper">
+        //                     <div class="message-content">
+        //                         <p class="name">Bot | ${time}</p>
+        //                         <div class="message">${socketId} joined the room.</div>
+        //                     </div>
+        //                 </div>`
+        //     chatArea.scrollTop = chatArea.scrollHeight;
+        // } else if (msg == 'left') {
+        //     chatArea.innerHTML += `<div class="message-wrapper">
+        //                     <div class="message-content">
+        //                         <p class="name">Bot | ${time}</p>
+        //                         <div class="message">${socketId} left the room.</div>
+        //                     </div>
+        //                 </div>`
+        //     chatArea.scrollTop = chatArea.scrollHeight;
+        // } else if (socketRTC.id == socketId) {
+        //     chatArea.innerHTML += `<div class="message-wrapper reverse">
+        //                     <div class="message-content">
+        //                         <p class="name">${socketId} | ${time}</p>
+        //                         <div class="message">${msg}</div>
+        //                     </div>
+        //                 </div>`
+        //     chatArea.scrollTop = chatArea.scrollHeight;
+        // } else {
+        //     chatArea.innerHTML += `<div class="message-wrapper">
+        //                     <div class="message-content">
+        //                         <p class="name">${socketId} | ${time}</p>
+        //                         <div class="message">${msg}</div>
+        //                     </div>
+        //                 </div>`
+        //     chatArea.scrollTop = chatArea.scrollHeight;
+        // }
 
     });
 
@@ -1438,21 +1441,21 @@ btnMedical.addEventListener('click', () => {
 })
 
 
-chatSend.addEventListener('click', () => {
-    const msg = chatInput.value.trim();
-    if (msg) {
-        socketRTC.emit('message', msg, socketRTC.id, currentCase);
-        chatInput.value = '';
-        chatInput.focus();
-    }
-});
+// chatSend.addEventListener('click', () => {
+//     const msg = chatInput.value.trim();
+//     if (msg) {
+//         socketRTC.emit('message', msg, socketRTC.id, currentCase);
+//         chatInput.value = '';
+//         chatInput.focus();
+//     }
+// });
 
-chatInput.addEventListener('keyup', function (event) {
-    if (event.keyCode === 13) {
-        event.preventDefault();
-        chatSend.click();
-    }
-});
+// chatInput.addEventListener('keyup', function (event) {
+//     if (event.keyCode === 13) {
+//         event.preventDefault();
+//         chatSend.click();
+//     }
+// });
 
 btnEnd.addEventListener('click', function (e) {
     let pl = {

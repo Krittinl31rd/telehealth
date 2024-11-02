@@ -10,19 +10,20 @@ const chatInput = document.getElementById('chatInput');
 const chatArea = document.getElementById('chatArea');
 
 const waitingContainer = document.getElementById('waiting');
-const actionContainer = document.getElementById('actionContainer');
-const chooseContainer = document.getElementById('chooseContainer');
-const consultContainer = document.getElementById('consultContainer');
-const choosePrimaryContainer = document.getElementById('choosePrimaryContainer');
+// const actionContainer = document.getElementById('actionContainer');
+// const chooseContainer = document.getElementById('chooseContainer');
+// const consultContainer = document.getElementById('consultContainer');
+// const choosePrimaryContainer = document.getElementById('choosePrimaryContainer');
+const doctorsContainer = document.getElementById('doctorsContainer');
 const patientContainer = document.getElementById('patientContainer');
 const mainContainer = document.getElementById('mainCotainer');
 const acceptInfo = document.getElementById('acceptInfo');
 const rejectInfo = document.getElementById('rejectInfo');
 
 const backBtn = document.querySelector('.backBtn');
-const chooseDoctor = document.getElementById('chooseDoctor');
-const consultDoctor = document.getElementById('consultDoctor');
-const choosePrimaryDoctor = document.getElementById('choosePrimaryDoctor');
+// const chooseDoctor = document.getElementById('chooseDoctor');
+
+// const choosePrimaryDoctor = document.getElementById('choosePrimaryDoctor');
 
 // Create WebSocket connection.
 var socket = null;
@@ -91,7 +92,7 @@ function ResetView() {//For first connect to websocket
     localStorage.setItem("yourIden", "")
     localStorage.setItem("caseId", "")
 
-    mainContainer.className = `app-container active`;
+    mainContainer.className = `app-container-patient active`;
     waitingContainer.className = `d-flex d-flex-column justify-content-center align-item-center`
     // actionContainer.className = `action-container active`;
 
@@ -150,6 +151,7 @@ async function CheckWebsocketCommand(package) {
                 }
             }
             else if (data.cmd == command.acceptCase) {
+                localStorage.setItem("caseId", data.param.caseId);
                 startRTC()
                 console.log('Doctor accept your case.' + data.param.caseId);
             }
@@ -160,7 +162,8 @@ async function CheckWebsocketCommand(package) {
                 }
                 configBtn.className = `config-btn none`;
                 waitingContainer.className = `none`;
-                actionContainer.className = `action-container active`;
+                doctorsContainer.className = `d-flex d-flex-column justify-content-center align-item-start`
+                fetchDoctor()
             }
             // end call
             else if (data.cmd == command.disableConsult) {
@@ -177,6 +180,89 @@ async function CheckWebsocketCommand(package) {
 
     }
 }
+
+const caulateAge = (brithdate) => {
+    const today = new Date();
+    const birthDate = new Date(brithdate);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+    }
+    return age;
+}
+
+async function fetchDoctor() {
+    try {
+        const response = await fetch(`https://${mainIP}:3031/getdoctor`);
+        if (!response.ok) {
+            console.error("Failed to fetch data");
+            return;
+        }
+        let data = await response.json();
+        const mainDoctor = document.getElementById('mainDoctor')
+        mainDoctor.innerHTML = '';
+
+        const doctorElements = data.map((item, index) => {
+            const boxDoctor = document.createElement('div')
+            boxDoctor.className = `box-doctor`;
+            boxDoctor.innerHTML = `
+                <div class="header">
+                        <div class="img-doctor">
+                        <img class="img" src="./images/${item.gender == 1 ? "doctor.png" : "doctor2.png"}">
+                        </div>
+                        <div class="name-doctor">
+                        <label style="font-weight: bold; font-size: 20px;">Doctor</label>
+                        <label style="font-size: 18px">${item.name}</label>
+                        </div>
+                </div>
+                <div class="content">
+                        <label style="font-weight: bold; font-size: 20px;">Psychiatry</label>
+                        <label style="font-weight: semi-bold; font-size: 20px;">${item.gender == 1 ? "Male" : "Female"} | ${caulateAge(item.birthday)} Ages</label>
+                        <label>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo blanditiis eveniet ipsam, quastempora aperiam officiis?</label>
+                </div>
+                <div class="footer">
+                        <button id="consultDoctor${index}">Consult with Doctor</button>
+                </div>`
+            return boxDoctor;
+        });
+
+
+        doctorElements.forEach(doctorElement => {
+            mainDoctor.appendChild(doctorElement);
+        });
+
+
+        data.forEach((item, index) => {
+            const consultDoctor = document.getElementById('consultDoctor' + index);
+            consultDoctor.addEventListener('click', () => {
+                // actionContainer.className = `action-container`;
+                backBtn.className = `backBtn active`;
+                doctorsContainer.className = 'none'
+                consultContainer.className = `doctor-container active`;
+                if (socket.OPEN) {
+                    yourCase = uuidv4();
+                    let pl = {
+                        cmd: command.anouncCase,
+                        param: {
+                            //machineid: machineId,
+                            caseId: yourCase,
+                            iden: yourId
+                        }
+                    };
+                    socket.send(JSON.stringify(pl));
+                    console.log(pl.param.caseId);
+                }
+            })
+        })
+
+
+
+    } catch (err) {
+        console.error(err);
+    }
+}
+
 function isJson(data) {
     try {
         return JSON.parse(data);
@@ -191,43 +277,28 @@ function uuidv4() {
     );
 }
 
-chooseDoctor.addEventListener('click', () => {
-    actionContainer.className = `action-container`;
-    backBtn.className = `backBtn active`;
-    chooseContainer.className = `doctor-container active`;
-})
+// chooseDoctor.addEventListener('click', () => {
+//     actionContainer.className = `action-container`;
+//     backBtn.className = `backBtn active`;
+//     chooseContainer.className = `doctor-container active`;
+// })
 
-consultDoctor.addEventListener('click', () => {
-    actionContainer.className = `action-container`;
-    backBtn.className = `backBtn active`;
-    consultContainer.className = `doctor-container active`;
-    if (socket.OPEN) {
-        yourCase = uuidv4();
-        let pl = {
-            cmd: command.anouncCase,
-            param: {
-                //machineid: machineId,
-                caseId: yourCase,
-                iden: yourId
-            }
-        };
-        socket.send(JSON.stringify(pl));
-        console.log(pl.param.caseId);
-    }
-})
 
-choosePrimaryDoctor.addEventListener('click', () => {
-    actionContainer.className = `action-container`;
-    backBtn.className = `backBtn active`;
-    choosePrimaryContainer.className = `doctor-container active`;
-})
+
+// choosePrimaryDoctor.addEventListener('click', () => {
+//     actionContainer.className = `action-container`;
+//     backBtn.className = `backBtn active`;
+//     choosePrimaryContainer.className = `doctor-container active`;
+// })
 
 backBtn.addEventListener('click', () => {
     backBtn.className = `backBtn`;
-    actionContainer.className = `action-container active`;
-    chooseContainer.className = `doctor-container`;
+    doctorsContainer.className = `d-flex d-flex-column justify-content-center align-item-start`
     consultContainer.className = `doctor-container`;
-    choosePrimaryContainer.className = `doctor-container`;
+    // actionContainer.className = `action-container active`;
+    // chooseContainer.className = `doctor-container`;
+    // consultContainer.className = `doctor-container`;
+    // choosePrimaryContainer.className = `doctor-container`;
 })
 
 acceptInfo.addEventListener('click', function (e) {
@@ -264,7 +335,7 @@ async function startRTC() {
     socketRTC = null;
     socketRTC = io.connect(`https://${mainIP}:3001`);
 
-    mainContainer.className = `app-container hide`;
+    mainContainer.className = `app-container-patient hide`;
     patientContainer.className = `app-container patient active`;
 
     socketRTC.on('user-connected', socketId => {
@@ -461,39 +532,39 @@ async function startRTC() {
     });
 
     socketRTC.on('message', ({ msg, socketId, time }) => {
-        if (msg == 'joined') {
-            chatArea.innerHTML += `<div class="message-wrapper">
-                            <div class="message-content">
-                                <p class="name">Bot | ${time}</p>
-                                <div class="message">${socketId} joined the room.</div>
-                            </div>
-                        </div>`
-            chatArea.scrollTop = chatArea.scrollHeight;
-        } else if (msg == 'left') {
-            chatArea.innerHTML += `<div class="message-wrapper">
-                            <div class="message-content">
-                                <p class="name">Bot | ${time}</p>
-                                <div class="message">${socketId} left the room.</div>
-                            </div>
-                        </div>`
-            chatArea.scrollTop = chatArea.scrollHeight;
-        } else if (socketRTC.id == socketId) {
-            chatArea.innerHTML += `<div class="message-wrapper reverse">
-                            <div class="message-content">
-                                <p class="name">${socketId} | ${time}</p>
-                                <div class="message">${msg}</div>
-                            </div>
-                        </div>`
-            chatArea.scrollTop = chatArea.scrollHeight;
-        } else {
-            chatArea.innerHTML += `<div class="message-wrapper">
-                            <div class="message-content">
-                                <p class="name">${socketId} | ${time}</p>
-                                <div class="message">${msg}</div>
-                            </div>
-                        </div>`
-            chatArea.scrollTop = chatArea.scrollHeight;
-        }
+        // if (msg == 'joined') {
+        //     chatArea.innerHTML += `<div class="message-wrapper">
+        //                     <div class="message-content">
+        //                         <p class="name">Bot | ${time}</p>
+        //                         <div class="message">${socketId} joined the room.</div>
+        //                     </div>
+        //                 </div>`
+        //     chatArea.scrollTop = chatArea.scrollHeight;
+        // } else if (msg == 'left') {
+        //     chatArea.innerHTML += `<div class="message-wrapper">
+        //                     <div class="message-content">
+        //                         <p class="name">Bot | ${time}</p>
+        //                         <div class="message">${socketId} left the room.</div>
+        //                     </div>
+        //                 </div>`
+        //     chatArea.scrollTop = chatArea.scrollHeight;
+        // } else if (socketRTC.id == socketId) {
+        //     chatArea.innerHTML += `<div class="message-wrapper reverse">
+        //                     <div class="message-content">
+        //                         <p class="name">${socketId} | ${time}</p>
+        //                         <div class="message">${msg}</div>
+        //                     </div>
+        //                 </div>`
+        //     chatArea.scrollTop = chatArea.scrollHeight;
+        // } else {
+        //     chatArea.innerHTML += `<div class="message-wrapper">
+        //                     <div class="message-content">
+        //                         <p class="name">${socketId} | ${time}</p>
+        //                         <div class="message">${msg}</div>
+        //                     </div>
+        //                 </div>`
+        //     chatArea.scrollTop = chatArea.scrollHeight;
+        // }
 
     });
 
@@ -600,21 +671,21 @@ btnMic.addEventListener('click', () => {
 })
 
 
-chatSend.addEventListener('click', () => {
-    const msg = chatInput.value.trim();
-    if (msg) {
-        socketRTC.emit('message', msg, socketRTC.id, yourCase);
-        chatInput.value = '';
-        chatInput.focus();
-    }
-});
+// chatSend.addEventListener('click', () => {
+//     const msg = chatInput.value.trim();
+//     if (msg) {
+//         socketRTC.emit('message', msg, socketRTC.id, yourCase);
+//         chatInput.value = '';
+//         chatInput.focus();
+//     }
+// });
 
-chatInput.addEventListener('keyup', function (event) {
-    if (event.keyCode === 13) {
-        event.preventDefault();
-        chatSend.click();
-    }
-});
+// chatInput.addEventListener('keyup', function (event) {
+//     if (event.keyCode === 13) {
+//         event.preventDefault();
+//         chatSend.click();
+//     }
+// });
 
 btnEnd.addEventListener('click', function (e) {
     let pl = {

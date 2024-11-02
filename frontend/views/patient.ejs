@@ -13,26 +13,19 @@
 
 <body>
 
-  <div class="app-container" id="mainCotainer">
-    <div class="app-main">
-      <p>Welcome Patient to <%= title %>
-      </p>
+  <div class="app-container-patient" id="mainCotainer">
+
+    <div class="app-main-patient">
 
       <div class="d-flex d-flex-column justify-content-center align-item-center" style="height: 100%;" id="waiting">
         <div class="loader"></div>
         <h2>Please authentication for use.</h2>
       </div>
 
-      <div class="action-container" id="actionContainer">
-        <button class="actionBtn" id="chooseDoctor">Choose doctor</button>
-        <button class="actionBtn" id="consultDoctor">Consult doctor</button>
-        <button class="actionBtn" id="choosePrimaryDoctor">Choose primary doctor</button>
-      </div>
+      <div id="doctorsContainer" class="none" style="height: 100%; width: 100%;">
+        <label style="font-weight: bold; font-size: 20px;">Book a Doctor</label>
+        <div class="main-doctor" id="mainDoctor">
 
-
-      <div class="doctor-container" id="chooseContainer">
-        <div class="doctor-header">
-          <span>Choose doctor</span>
         </div>
       </div>
 
@@ -48,30 +41,29 @@
         </div>
       </div>
 
-      <div class="doctor-container" id="choosePrimaryContainer">
-        <div class="doctor-header">
-          <span>Choose primary doctor</span>
-        </div>
-      </div>
 
     </div>
-    <button class="backBtn">
-      <i class='bx bx-arrow-back'></i>
-    </button>
-    <button class="config-btn">
-      <i class='bx bxs-cog'></i>
-    </button>
 
-    <div class="form-config">
-      <label>Username</label>
-      <input type="text" id="mcnUsername">
 
-      <label for="lname">Password</label>
-      <input type="password" id="mcnPassword">
+  </div>
 
-      <button class="save">Save</button>
+  <button class="backBtn">
+    <i class='bx bx-arrow-back'></i>
+  </button>
+  <button class="config-btn">
+    <i class='bx bxs-cog'></i>
+  </button>
 
-    </div>
+  <div class="form-config">
+    <label>Username</label>
+    <input type="text" id="mcnUsername">
+
+    <label for="lname">Password</label>
+    <input type="password" id="mcnPassword">
+
+    <button class="save">Save</button>
+  </div>
+
   </div>
 
   <div class="app-container patient" id="patientContainer">

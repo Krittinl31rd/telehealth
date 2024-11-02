@@ -14,10 +14,20 @@
 <body>
 
 
-  <div class="app-container" id="mainCotainer">
-    <div class="app-main">
+  <div class="app-container-doctor" id="mainCotainer">
+    <div class="app-main-doctor">
       <p id="doctorName"></p>
       <div class="caselist-container" id="caselistContainer">
+        <table id="caselist">
+          <tr>
+            <th>#</th>
+            <th>caseId</th>
+            <th>Topic</th>
+            <th></th>
+          </tr>
+          <tbody id="tbody">
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
@@ -43,7 +53,7 @@
       </div>
     </div>
     <!-- Right Side -->
-    <div class="right-side">
+    <!-- <div class="right-side">
       <button class="btn-close-right"><i class='bx bx-x'></i></button>
       <div class="chat-container">
         <div class="chat-header">
@@ -60,14 +70,7 @@
             </button>
           </div>
         </div>
-      </div>
-
-    </div>
-
-    <button class="expand-btn">
-      <i class='bx bxs-chat'></i>
-    </button>
-
+      </div> -->
 
     <div class="modal">
       <div class="modal-content">
@@ -79,10 +82,21 @@
       </div>
     </div>
 
-  </div>
-  </div>
+    <!-- <button class="expand-btn">
+            <i class='bx bxs-chat'></i>
+          </button> -->
 
   </div>
+
+
+
+
+
+
+  <!-- </div>
+  </div>
+
+  </div> -->
 
   <script src="./javascripts/doctor.js"></script>
   <script src="./javascripts/script.js"></script>
