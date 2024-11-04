@@ -209,7 +209,7 @@ async function fetchDoctor() {
             boxDoctor.innerHTML = `
                 <div class="header">
                         <div class="img-doctor">
-                        <img class="img" src="./images/${item.gender == 1 ? "doctor.png" : "doctor2.png"}">
+                        <img class="img" src="data:image/png;base64,${item.avatar.base64}">
                         </div>
                         <div class="name-doctor">
                         <label style="font-weight: bold; font-size: 20px;">Doctor</label>
@@ -217,9 +217,9 @@ async function fetchDoctor() {
                         </div>
                 </div>
                 <div class="content">
-                        <label style="font-weight: bold; font-size: 20px;">Psychiatry</label>
+                        <label style="font-weight: bold; font-size: 20px;">${item.specialty.name}</label>
                         <label style="font-weight: semi-bold; font-size: 20px;">${item.gender == 1 ? "Male" : "Female"} | ${caulateAge(item.birthday)} Ages</label>
-                        <label>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo blanditiis eveniet ipsam, quastempora aperiam officiis?</label>
+                        <label>${item.specialty.description}</label>
                 </div>
                 <div class="footer">
                         <button id="consultDoctor${index}">Consult with Doctor</button>
@@ -237,7 +237,7 @@ async function fetchDoctor() {
             const consultDoctor = document.getElementById('consultDoctor' + index);
             consultDoctor.addEventListener('click', () => {
                 // actionContainer.className = `action-container`;
-                backBtn.className = `backBtn active`;
+                // backBtn.className = `backBtn active`;
                 doctorsContainer.className = 'none'
                 consultContainer.className = `doctor-container active`;
                 if (socket.OPEN) {

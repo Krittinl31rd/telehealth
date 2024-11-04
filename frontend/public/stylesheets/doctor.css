@@ -31,6 +31,7 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    position: absolute;
 }
 
 .caselist-container {
@@ -151,6 +152,10 @@
     color: var(--message-bg);
 }
 
+.meas-content {
+    flex: 1;
+    padding: 10px 10px 10px 10px;
+}
 
 .meas-container {
     display: grid;
@@ -158,8 +163,8 @@
     grid-row-gap: 1em;
     grid-column-gap: 0.5em;
     overflow: auto;
-    flex: 1;
-    padding: 10px 10px 10px 10px;
+    height: 90%;
+    margin-top: 8px;
 }
 
 .meas-card {
@@ -244,4 +249,15 @@
     text-align: center;
     background-color: #04AA6D;
     color: white;
+}
+
+.fullscreen {
+    position: relative;
+    top: 0%;
+    left: 50%;
+    opacity: 0.5;
+}
+
+#fullscreenBtn {
+    border: none;
 }

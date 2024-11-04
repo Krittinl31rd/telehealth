@@ -16,6 +16,7 @@
 
   <div class="app-container-doctor" id="mainCotainer">
     <div class="app-main-doctor">
+      <div class="fullscreen"><button id="fullscreenBtn"><i class='bx bx-fullscreen'></i></button></div>
       <p id="doctorName"></p>
       <div class="caselist-container" id="caselistContainer">
         <table id="caselist">
@@ -78,7 +79,10 @@
           <a onclick="fetchData()" class="closebtn" id="refreshData"><i class='bx bx-refresh'></i></a>
           <div class="filter-sidenav" id="filter-side"></div>
         </div>
-        <div class="meas-container"></div>
+        <div class="meas-content">
+          <div class="meas-profile"></div>
+          <div class="meas-container"></div>
+        </div>
       </div>
     </div>
 

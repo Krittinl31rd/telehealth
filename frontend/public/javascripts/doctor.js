@@ -185,12 +185,17 @@ async function fetchData() {
     try {
         const response = await fetch(`https://${mainIP}:3031/data/${iden}`);
         let data = await response.json();
+        dataPatient = data;
         measData = data.result;
 
         resultCont.innerHTML = "";
         filterCont.innerHTML = "";
 
+        const measProfile = document.getElementsByClassName('meas-profile')[0]
+        measProfile.innerHTML = `<label>Name: ${dataPatient.name} | Birthday: ${dataPatient.birthday} | Age: ${dataPatient.age} years</label>`
+
         if (measData.length >= 1) {
+
             document.getElementById('refreshData').style.display = 'block'
             measData.map((meas) => {
                 createMeas(meas);
@@ -1481,3 +1486,12 @@ btnEnd.addEventListener('click', function (e) {
 });
 
 
+const fullscreenBtn = document.getElementById("fullscreenBtn");
+
+fullscreenBtn.addEventListener("click", () => {
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+    } else {
+        document.exitFullscreen();
+    }
+});

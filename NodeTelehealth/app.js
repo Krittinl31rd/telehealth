@@ -9,6 +9,7 @@ const WebSocket = require("ws");
 var http = require('http');
 var https = require('https');
 const fs = require('fs');
+const { readdirSync } = require("fs");
 // const avtartxt = require('./avatar.json');
 const { command, role } = require('./models/cmd');
 const { v4: uuidv4 } = require('uuid');
@@ -20,6 +21,7 @@ const serverOptions = {
     cert: fs.readFileSync("server.crt", "utf8"),
     key: fs.readFileSync("server.key", "utf8"),
 };
+const specialties = require("./data/specialties.json")
 
 // Function to get a member by ID
 async function getMemberById(memberId) {
@@ -818,13 +820,37 @@ app.get('/getdoctor', async (req, res) => {
         const doctors = await Member.findAll({
             where: {
                 role: role.Doctor,
-                status: 1
-            }
+                status: 1,
+            }, attributes: ['name', 'gender', 'birthday']
+
         })
         if (!doctors) {
             return res.status(400).json({ message: "No doctor." })
         }
+        let avatar = []
+        fs.readdirSync("./images").forEach((file) => {
+            const filePath = path.join('./images', file);
+            if (path.extname(file) === '.png') {
+                const data = fs.readFileSync(filePath);
+                const base64Image = data.toString('base64');
+
+                avatar.push({ name: file, base64: base64Image });
+            }
+        });
+
+        for (let d = 0; d < doctors.length; d++) {
+            doctors[d].dataValues.avatar = {
+                name: avatar[d]?.name,
+                base64: avatar[d]?.base64
+            }
+            doctors[d].dataValues.specialty = {
+                name: specialties[d]?.name,
+                description: specialties[d]?.description,
+            }
+        }
+
         res.status(200).json(doctors)
+
     } catch (err) {
         console.log(err);
         res.status(500).send("Internet Server Error")

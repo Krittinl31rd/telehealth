@@ -1,0 +1,42 @@
+[
+    {
+        "name": "Orthopedist",
+        "description": "Specializes in diagnosing and treating conditions of the bones, joints, and muscles, including fractures, arthritis, and sports injuries."
+    },
+    {
+        "name": "Cardiologist",
+        "description": "Expert in heart and blood vessel health, providing care for conditions like hypertension, arrhythmias, and heart disease."
+    },
+    {
+        "name": "Dermatologist",
+        "description": "Focused on the health of skin, hair, and nails, treating conditions such as acne, eczema, and skin cancer."
+    },
+    {
+        "name": "Neurologist",
+        "description": "Specialist in disorders of the nervous system, including headaches, seizures, and neurodegenerative diseases."
+    },
+    {
+        "name": "Pediatrician",
+        "description": "Dedicated to the health and well-being of children, offering preventive care and treatment for various childhood illnesses."
+    },
+    {
+        "name": "Psychiatrist",
+        "description": "Focuses on mental health, diagnosing and treating conditions like depression, anxiety, and bipolar disorder."
+    },
+    {
+        "name": "Endocrinologist",
+        "description": "Expert in hormone-related disorders, managing conditions like diabetes, thyroid issues, and metabolic disorders."
+    },
+    {
+        "name": "Ophthalmologist",
+        "description": "Specialist in eye care, diagnosing and treating vision problems, cataracts, glaucoma, and other eye conditions."
+    },
+    {
+        "name": "Gastroenterologist",
+        "description": "Focused on digestive health, treating disorders of the stomach, intestines, and liver, including IBS and hepatitis."
+    },
+    {
+        "name": "Pulmonologist",
+        "description": "Specialist in respiratory health, managing conditions like asthma, chronic bronchitis, and lung disease."
+    }
+]
